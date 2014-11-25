@@ -85,4 +85,35 @@ describe ('gremlin-graphviz', function () {
         .done(done);
     });
   });
+
+  // ## with classic graph as input
+  // Tests using the classic in-memory TinkerGraph database instance.
+  describe ('with classic graph as input', function () {
+
+    var TinkerFactory = gremlin.java.import('com.tinkerpop.gremlin.tinkergraph.structure.TinkerFactory');
+
+    var javaGraph;
+    var graph;
+
+    before(function () {
+      javaGraph = TinkerFactory.createClassicSync();
+      expect(javaGraph).to.be.ok;
+      graph = gremlin.wrap(javaGraph);
+      expect(graph).to.be.ok;
+    });
+
+    after(function (done) {
+      graph = null;
+      if (javaGraph) {
+        javaGraph.close(function() {
+          javaGraph = null;
+          done();
+        });
+      }
+    });
+
+    it ('test harness should initialize', function () {
+    });
+
+  });
 });
