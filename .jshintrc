@@ -1,0 +1,16 @@
+// .jshintrc
+// Global configuration defaults for the jshint tool.
+{
+  "node": true,
+  "globalstrict": false,
+  "indent": 2,
+  "expr": true,
+  "globals": {
+    "expect": true,
+    "describe": true,
+    "it": true,
+    "xit": true,
+    "before": true,
+    "after": true
+  }
+}
