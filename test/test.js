@@ -77,5 +77,12 @@ describe ('gremlin-graphviz', function () {
         .done(done);
     });
 
+    it ('can be rendered as dot', function (done) {
+      gremlinGraphviz(graph)
+        .then(function (g) {
+          expect(g.to_dot()).to.equal('digraph G {\n}\n');
+        })
+        .done(done);
+    });
   });
 });
