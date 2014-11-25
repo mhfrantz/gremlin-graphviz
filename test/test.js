@@ -115,5 +115,13 @@ describe ('gremlin-graphviz', function () {
     it ('test harness should initialize', function () {
     });
 
+    it ('can be rendered as dot', function (done) {
+      gremlinGraphviz(graph)
+        .then(function (g) {
+          expect(g.to_dot()).to.equal('digraph G {\n  "1";\n  "2";\n  "3";\n  "4";\n  "5";\n  "6";\n}\n');
+        })
+        .done(done);
+    });
+
   });
 });
