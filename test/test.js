@@ -6,7 +6,8 @@ describe ('gremlin-graphviz', function () {
   var _ = require('lodash');
   var chai = require('chai');
   var expect = chai.expect;
-  var gremlin = require('gremlin-v3');
+  var Gremlin = require('gremlin-v3');
+  var gremlin = new Gremlin();
   var gremlinGraphviz = require('../lib/index.js');
   var Q = require('q');
 
@@ -18,32 +19,63 @@ describe ('gremlin-graphviz', function () {
     expect(_.isFunction(gremlinGraphviz)).to.be.true;
   });
 
-  it ('returns a promise', function () {
-    var promise = gremlinGraphviz();
-    expect(Q.isPromise(promise)).to.be.true;
-  });
+  // ## with empty graph as input
+  // Tests using an empty in-memory TinkerGraph database instance.
+  describe ('with empty graph as input', function () {
 
-  it ('accepts promises', function (done) {
-    gremlinGraphviz(Q(null), Q({}))
-      .then(function (g) {
-        expect(g).to.be.ok;
-      })
-      .done(done);
-  });
+    var TinkerGraph = gremlin.java.import('com.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph');
 
-  it ('returns a digraph', function (done) {
-    gremlinGraphviz()
-      .then(function (g) {
-        expect(g.type).to.equal('digraph');
-      })
-      .done(done);
-  });
+    var javaGraph;
+    var graph;
 
-  it ('returns a graph with a default ID', function (done) {
-    gremlinGraphviz()
-      .then(function (g) {
-        expect(g.id).to.equal('G');
-      })
-      .done(done);
+    before(function () {
+      javaGraph = TinkerGraph.openSync();
+      expect(javaGraph).to.be.ok;
+      graph = gremlin.wrap(javaGraph);
+      expect(graph).to.be.ok;
+    });
+
+    after(function (done) {
+      graph = null;
+      if (javaGraph) {
+        javaGraph.close(function() {
+          javaGraph = null;
+          done();
+        });
+      }
+    });
+
+    it ('test harness should initialize', function () {
+    });
+
+    it ('returns a promise', function () {
+      var promise = gremlinGraphviz(graph);
+      expect(Q.isPromise(promise)).to.be.true;
+    });
+
+    it ('accepts promises', function (done) {
+      gremlinGraphviz(Q(graph), Q({}))
+        .then(function (g) {
+          expect(g).to.be.ok;
+        })
+        .done(done);
+    });
+
+    it ('returns a digraph', function (done) {
+      gremlinGraphviz(graph)
+        .then(function (g) {
+          expect(g.type).to.equal('digraph');
+        })
+        .done(done);
+    });
+
+    it ('returns a graph with a default ID', function (done) {
+      gremlinGraphviz(graph)
+        .then(function (g) {
+          expect(g.id).to.equal('G');
+        })
+        .done(done);
+    });
+
   });
 });
