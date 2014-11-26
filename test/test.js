@@ -12,6 +12,7 @@ describe ('gremlin-graphviz', function () {
   var gremlinGraphviz = require('../lib/index.js');
   var heredoc = require('heredoc');
   var Q = require('q');
+  var sanitizeHtml = require('sanitize-html');
 
   it ('loads via require', function () {
   });
@@ -160,23 +161,32 @@ digraph G {
         .done(done);
     });
 
-    it ('can be rendered as force-directed graph in PNG', function (done) {
-      var goldenFile = 'test/data/test.png';
+    it ('can be rendered as force-directed graph in SVG', function (done) {
+      var goldenFile = 'test/data/test.svg';
       fs.readFile(goldenFile, function (err, expectedData) {
         expect(err).to.be.not.ok;
         expect(expectedData).to.be.ok;
         gremlinGraphviz(graph)
           .then(function (g) {
             g.use = 'fdp';
-            g.output('png', function (actualData) {
-              expect(actualData).to.deep.equal(expectedData);
+            g.output('svg', function (actualData) {
+              var sanitizedData = sanitizeSvg(actualData);
+              expect(sanitizedData).to.deep.equal(expectedData.toString());
               done();
             }, function (code, out, err) {
-              throw new Error('Code: ' + code + '\nError:' + err);
+              done('Code: ' + code + '\nError:' + err);
             });
           });
       });
     });
 
   });
+
+  var sanitizeSvg = function (dirty) {
+    var opts = {
+      allowedTags: false,
+      allowedAttributes: false
+    };
+    return sanitizeHtml(dirty, opts);
+  };
 });
