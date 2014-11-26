@@ -6,6 +6,7 @@ describe ('gremlin-graphviz', function () {
   var _ = require('lodash');
   var chai = require('chai');
   var expect = chai.expect;
+  var fs = require('fs');
   var Gremlin = require('gremlin-v3');
   var gremlin = new Gremlin();
   var gremlinGraphviz = require('../lib/index.js');
@@ -157,6 +158,24 @@ digraph G {
           expect(g.to_dot()).to.equal(expected);
         })
         .done(done);
+    });
+
+    it ('can be rendered as force-directed graph in PNG', function (done) {
+      var goldenFile = 'test/data/test.png';
+      fs.readFile(goldenFile, function (err, expectedData) {
+        expect(err).to.be.not.ok;
+        expect(expectedData).to.be.ok;
+        gremlinGraphviz(graph)
+          .then(function (g) {
+            g.use = 'fdp';
+            g.output('png', function (actualData) {
+              expect(actualData).to.deep.equal(expectedData);
+              done();
+            }, function (code, out, err) {
+              throw new Error('Code: ' + code + '\nError:' + err);
+            });
+          });
+      });
     });
 
   });
