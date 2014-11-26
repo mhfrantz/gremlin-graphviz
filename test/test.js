@@ -9,6 +9,7 @@ describe ('gremlin-graphviz', function () {
   var Gremlin = require('gremlin-v3');
   var gremlin = new Gremlin();
   var gremlinGraphviz = require('../lib/index.js');
+  var heredoc = require('heredoc');
   var Q = require('q');
 
   it ('loads via require', function () {
@@ -116,9 +117,26 @@ describe ('gremlin-graphviz', function () {
     });
 
     it ('can be rendered as dot', function (done) {
+      var expected = heredoc(function () {/*
+digraph G {
+  "1";
+  "2";
+  "3";
+  "4";
+  "5";
+  "6";
+  "2" -> "1";
+  "4" -> "1";
+  "3" -> "1";
+  "5" -> "4";
+  "3" -> "4";
+  "3" -> "6";
+}
+*/});
+
       gremlinGraphviz(graph)
         .then(function (g) {
-          expect(g.to_dot()).to.equal('digraph G {\n  "1";\n  "2";\n  "3";\n  "4";\n  "5";\n  "6";\n}\n');
+          expect(g.to_dot()).to.equal(expected);
         })
         .done(done);
     });

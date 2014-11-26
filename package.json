@@ -32,6 +32,7 @@
   "devDependencies": {
     "chai": "^1.10.0",
     "gremlin-v3": "0.0.2",
+    "heredoc": "^1.2.0",
     "jshint": "^2.5.10",
     "lodash": "^2.4.1",
     "mocha": "^2.0.1"
