@@ -78,6 +78,15 @@ describe ('gremlin-graphviz', function () {
         .done(done);
     });
 
+    it ('contains no vertices and edges', function (done) {
+      gremlinGraphviz(graph)
+        .then(function (g) {
+          expect(g.nodeCount()).to.equal(0);
+          expect(g.edgeCount()).to.equal(0);
+        })
+        .done(done);
+    });
+
     it ('can be rendered as dot', function (done) {
       gremlinGraphviz(graph)
         .then(function (g) {
@@ -114,6 +123,15 @@ describe ('gremlin-graphviz', function () {
     });
 
     it ('test harness should initialize', function () {
+    });
+
+    it ('contains vertices and edges', function (done) {
+      gremlinGraphviz(graph)
+        .then(function (g) {
+          expect(g.nodeCount()).to.equal(6);
+          expect(g.edgeCount()).to.equal(6);
+        })
+        .done(done);
     });
 
     it ('can be rendered as dot', function (done) {
