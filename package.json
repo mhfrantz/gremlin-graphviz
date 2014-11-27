@@ -1,0 +1,46 @@
+{
+  "name": "gremlin-graphviz",
+  "version": "1.0.0",
+  "description": "Use Graphviz to visualize Gremlin graphs.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "lint": "jshint lib test",
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mhfrantz/gremlin-graphviz.git"
+  },
+  "keywords": [
+    "gremlin",
+    "graphviz",
+    "dot",
+    "neato",
+    "fdp",
+    "sfdp",
+    "png"
+  ],
+  "author": "Matt Frantz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mhfrantz/gremlin-graphviz/issues"
+  },
+  "homepage": "https://github.com/mhfrantz/gremlin-graphviz",
+  "devDependencies": {
+    "chai": "^1.10.0",
+    "gremlin-v3": "0.0.4",
+    "heredoc": "^1.2.0",
+    "jshint": "^2.5.10",
+    "lodash": "^2.4.1",
+    "mocha": "^2.0.1",
+    "xmldom": "^0.1.19",
+    "xpath": "0.0.7"
+  },
+  "dependencies": {
+    "graphviz": "0.0.8",
+    "q": "^1.1.2"
+  }
+}
