@@ -12,7 +12,8 @@ describe ('gremlin-graphviz', function () {
   var gremlinGraphviz = require('../lib/index.js');
   var heredoc = require('heredoc');
   var Q = require('q');
-  var sanitizeHtml = require('sanitize-html');
+  var xmldom = require('xmldom');
+  var xpath = require('xpath');
 
   it ('loads via require', function () {
   });
@@ -162,31 +163,36 @@ digraph G {
     });
 
     it ('can be rendered as force-directed graph in SVG', function (done) {
-      var goldenFile = 'test/data/test.svg';
-      fs.readFile(goldenFile, function (err, expectedData) {
-        expect(err).to.be.not.ok;
-        expect(expectedData).to.be.ok;
-        gremlinGraphviz(graph)
-          .then(function (g) {
-            g.use = 'fdp';
-            g.output('svg', function (actualData) {
-              var sanitizedData = sanitizeSvg(actualData);
-              expect(sanitizedData).to.deep.equal(expectedData.toString());
-              done();
-            }, function (code, out, err) {
-              done('Code: ' + code + '\nError:' + err);
-            });
+      gremlinGraphviz(graph)
+        .then(function (g) {
+          g.use = 'fdp';
+          g.output('svg', function (svgData) {
+
+            // Parse DOM of SVG data.
+            var svgDoc = new xmldom.DOMParser().parseFromString(svgData.toString());
+            expect(svgDoc).to.be.ok;
+
+            // Check that we have an ellipse for each vertex.
+            var ellipses = findNodes('ellipse', svgDoc);
+            expect(ellipses).to.be.ok;
+            expect(ellipses.length).to.equal(6);
+
+            // Check that we have a path for each edge.
+            var paths = findNodes('path', svgDoc);
+            expect(paths).to.be.ok;
+            expect(paths.length).to.equal(6);
+
+            done();
+          }, function (code, out, err) {
+            done('Code: ' + code + '\nError:' + err);
           });
-      });
+        });
     });
 
   });
 
-  var sanitizeSvg = function (dirty) {
-    var opts = {
-      allowedTags: false,
-      allowedAttributes: false
-    };
-    return sanitizeHtml(dirty, opts);
+  // Find XML nodes with specific local name.
+  var findNodes = function (localName, doc) {
+    return xpath.select("//*[local-name(.)='" + localName + "']", doc);
   };
 });

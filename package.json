@@ -36,7 +36,8 @@
     "jshint": "^2.5.10",
     "lodash": "^2.4.1",
     "mocha": "^2.0.1",
-    "sanitize-html": "^1.4.3"
+    "xmldom": "^0.1.19",
+    "xpath": "0.0.7"
   },
   "dependencies": {
     "graphviz": "0.0.8",
