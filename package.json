@@ -2,7 +2,7 @@
   "name": "gremlin-graphviz",
   "version": "1.0.0",
   "description": "Use Graphviz to visualize Gremlin graphs.",
-  "main": "index.js",
+  "main": "lib/index.js",
   "directories": {
     "test": "test"
   },
