@@ -133,6 +133,7 @@ describe ('gremlin-graphviz', function () {
         .then(function (g) {
           expect(g.nodeCount()).to.equal(6);
           expect(g.edgeCount()).to.equal(6);
+          expect(g.getNode('1').id).to.equal('1');
         })
         .done(done);
     });
