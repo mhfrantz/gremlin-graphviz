@@ -6,7 +6,6 @@ describe ('gremlin-graphviz', function () {
   var _ = require('lodash');
   var chai = require('chai');
   var expect = chai.expect;
-  var fs = require('fs');
   var Gremlin = require('gremlin-v3');
   var gremlin = new Gremlin();
   var gremlinGraphviz = require('../lib/index.js');
