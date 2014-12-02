@@ -187,6 +187,31 @@ digraph G {
         .done(done);
     });
 
+    it ('allows specifying alternate edge label', function (done) {
+      var expected = heredoc(function () {/*
+digraph G {
+  "1";
+  "2";
+  "3";
+  "4";
+  "5";
+  "6";
+  "1" -> "2" [ label = "knows" ];
+  "1" -> "4" [ label = "knows" ];
+  "1" -> "3" [ label = "created" ];
+  "4" -> "5" [ label = "created" ];
+  "4" -> "3" [ label = "created" ];
+  "6" -> "3" [ label = "created" ];
+}
+*/});
+
+      gremlinGraphviz(graph, { edgeLabel: gremlinGraphviz.util.getEdgeLabel })
+        .then(function (g) {
+          expect(g.to_dot()).to.equal(expected);
+        })
+        .done(done);
+    });
+
     it ('can be rendered as force-directed graph in SVG', function (done) {
       gremlinGraphviz(graph)
         .then(function (g) {
