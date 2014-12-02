@@ -162,6 +162,31 @@ digraph G {
         .done(done);
     });
 
+    it ('allows specifying alternate vertex ID', function (done) {
+      var expected = heredoc(function () {/*
+digraph G {
+  "marko";
+  "vadas";
+  "lop";
+  "josh";
+  "ripple";
+  "peter";
+  "marko" -> "vadas";
+  "marko" -> "josh";
+  "marko" -> "lop";
+  "josh" -> "ripple";
+  "josh" -> "lop";
+  "peter" -> "lop";
+}
+*/});
+
+      gremlinGraphviz(graph, { vertexId: gremlinGraphviz.util.vertexAttributeGetter('name') })
+        .then(function (g) {
+          expect(g.to_dot()).to.equal(expected);
+        })
+        .done(done);
+    });
+
     it ('can be rendered as force-directed graph in SVG', function (done) {
       gremlinGraphviz(graph)
         .then(function (g) {
