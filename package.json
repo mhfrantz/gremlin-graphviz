@@ -7,6 +7,7 @@
     "test": "test"
   },
   "scripts": {
+    "doc": "docco lib/*.js test/*.js",
     "lint": "jshint lib test",
     "test": "mocha"
   },
@@ -31,7 +32,8 @@
   "homepage": "https://github.com/mhfrantz/gremlin-graphviz",
   "devDependencies": {
     "chai": "^1.10.0",
-    "gremlin-v3": "0.0.4",
+    "docco": "^0.6.3",
+    "gremlin-v3": "0.0.5",
     "heredoc": "^1.2.0",
     "jshint": "^2.5.10",
     "lodash": "^2.4.1",
