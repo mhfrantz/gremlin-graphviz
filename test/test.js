@@ -239,6 +239,45 @@ digraph G {
         });
     });
 
+    it ('allows graph properties to be set/get', function () {
+      return gremlinGraphviz(graph)
+        .then(function (g) {
+          // Set a valid graph property that should appear in the DOT.  The valid set of properties are validated by
+          // Graphviz at runtime.
+          g.set('splines', true);
+          expect(g.get('splines')).to.equal(true);
+          expect(g.to_dot()).to.contain('splines = "true"');
+        });
+    });
+
+    it ('allows global node properties to be set/get', function () {
+      return gremlinGraphviz(graph)
+        .then(function (g) {
+          g.setNodeAttribut('color', 'blue');
+          expect(g.getNodeAttribut('color')).to.equal('blue');
+          expect(g.to_dot()).to.contain('node [ color = "blue" ]');
+        });
+    });
+
+    it ('allows global edge properties to be set/get', function () {
+      return gremlinGraphviz(graph)
+        .then(function (g) {
+          g.setEdgeAttribut('color', 'blue');
+          expect(g.getEdgeAttribut('color')).to.equal('blue');
+          expect(g.to_dot()).to.contain('edge [ color = "blue" ]');
+        });
+    });
+
+    it ('allows individual node properties to be set/get', function () {
+      return gremlinGraphviz(graph)
+        .then(function (g) {
+          var node1 = g.getNode('1');
+          node1.set('color', 'blue');
+          expect(node1.get('color')).to.equal('blue');
+          expect(g.to_dot()).to.contain('"1" [ color = "blue" ]');
+        });
+    });
+
   });
 
   // Find XML nodes with specific local name.
